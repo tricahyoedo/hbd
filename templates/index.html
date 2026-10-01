@@ -11,594 +11,476 @@
         body, html {
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            cursor: none; /* Sembunyikan kursor default agar pakai custom cursor */
-        }
-
-        /* ===== CUSTOM CURSOR ===== */
-        .cursor {
-            width: 18px;
-            height: 18px;
-            background: radial-gradient(circle, #f59e0b, #ef4444);
-            border-radius: 50%;
-            position: fixed;
-            top: 0; left: 0;
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: transform 0.1s, width 0.2s, height 0.2s;
-            box-shadow: 0 0 15px #f59e0b;
-        }
-        .cursor-ring {
-            width: 40px;
-            height: 40px;
-            border: 2px solid rgba(245,158,11,0.5);
-            border-radius: 50%;
-            position: fixed;
-            top: 0; left: 0;
-            pointer-events: none;
-            z-index: 9998;
-            transform: translate(-50%, -50%);
-            transition: all 0.15s ease;
-        }
-
-        /* ===== CURSOR TRAIL ===== */
-        .spark {
-            position: fixed;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 9997;
-            transform: translate(-50%, -50%);
-            animation: sparkFade 0.6s ease-out forwards;
-        }
-        @keyframes sparkFade {
-            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-            100% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+            min-height: 100vh;
         }
 
         /* ===== BACKGROUND ===== */
-        .bg-layer { position: absolute; inset: 0; overflow: hidden; }
-        .glow-orb { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.35; animation: orbDrift 10s ease-in-out infinite alternate; }
-        .orb1 { width: 600px; height: 600px; background: #7c3aed; top: -200px; left: -150px; animation-delay: 0s; }
-        .orb2 { width: 400px; height: 400px; background: #f59e0b; bottom: -150px; right: -100px; animation-delay: 3s; }
-        .orb3 { width: 350px; height: 350px; background: #06b6d4; top: 40%; left: 50%; transform: translateX(-50%); animation-delay: 6s; }
-        @keyframes orbDrift {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(40px, 30px); }
-        }
+        .bg-layer { position: fixed; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; }
+        .glow-orb { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.3; animation: orbDrift 12s ease-in-out infinite alternate; }
+        .orb1 { width: 500px; height: 500px; background: #7c3aed; top: -200px; left: -150px; }
+        .orb2 { width: 400px; height: 400px; background: #f59e0b; bottom: -150px; right: -100px; animation-delay: 4s; }
+        .orb3 { width: 300px; height: 300px; background: #06b6d4; top: 50%; left: 50%; transform: translateX(-50%); animation-delay: 8s; }
+        @keyframes orbDrift { 0% { transform: translate(0, 0); } 100% { transform: translate(40px, 30px); } }
 
-        /* ===== BINTANG & METEOR ===== */
+        /* ===== BINTANG ===== */
         .star { position: absolute; background: #fff; border-radius: 50%; animation: twinkle 3s infinite alternate; }
         @keyframes twinkle { 0% { opacity: 0.1; } 100% { opacity: 0.9; } }
+
+        /* ===== METEOR ===== */
         .shooting-star {
-            position: absolute;
-            height: 2px;
+            position: absolute; height: 2px;
             background: linear-gradient(90deg, #fff, transparent);
-            border-radius: 99px;
-            animation: shoot 4s linear infinite;
-            opacity: 0;
+            border-radius: 99px; animation: shoot 5s linear infinite; opacity: 0;
         }
         @keyframes shoot {
-            0% { transform: translateX(-200px) translateY(0) rotate(-30deg); opacity: 1; width: 0px; }
-            50% { opacity: 1; width: 150px; }
-            100% { transform: translateX(calc(100vw + 200px)) translateY(200px) rotate(-30deg); opacity: 0; width: 0px; }
+            0% { transform: translateX(-100px) translateY(0) rotate(-25deg); opacity: 0; width: 0; }
+            30% { opacity: 1; width: 120px; }
+            100% { transform: translateX(100vw) translateY(200px) rotate(-25deg); opacity: 0; width: 0; }
         }
 
-        /* ===== MAIN LAYOUT ===== */
-        .container {
-            position: relative;
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            padding: 20px;
+        /* ===== CUSTOM CURSOR ===== */
+        .cursor-dot { width: 14px; height: 14px; background: radial-gradient(circle, #f59e0b, #ef4444); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); box-shadow: 0 0 12px #f59e0b; transition: transform 0.05s; }
+        .cursor-ring { width: 36px; height: 36px; border: 2px solid rgba(245,158,11,0.4); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); }
+        .spark { position: fixed; border-radius: 50%; pointer-events: none; z-index: 9997; animation: sparkOut 0.5s ease-out forwards; }
+        @keyframes sparkOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
+
+        @media (hover: none) {
+            .cursor-dot, .cursor-ring { display: none; }
+            body { cursor: auto; }
+        }
+        @media (hover: hover) {
+            body { cursor: none; }
         }
 
-        /* ===== KARTU UTAMA dengan 3D TILT ===== */
-        .card-wrapper { perspective: 1000px; }
+        /* ===== KONTAINER UTAMA ===== */
+        .page {
+            position: relative; z-index: 10;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 100vh; padding: 40px 20px;
+        }
+
+        /* ===== KARTU UTAMA ===== */
+        .card-wrapper { perspective: 1200px; width: 100%; max-width: 580px; }
         .card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border-radius: 30px;
-            padding: 45px 55px;
-            max-width: 620px;
-            width: 100%;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border-radius: 28px;
+            padding: 40px 35px 35px 35px;
             text-align: center;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
-            animation: riseUp 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-            opacity: 0;
-            transform: translateY(60px);
-            transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
-            transform-style: preserve-3d;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+            animation: cardIn 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            opacity: 0; transform: translateY(50px);
+            transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
         }
+        @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
 
-        /* ===== KADO / ILUSTRASI KUE CSS ===== */
-        .cake-wrap {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
+        /* ===== KUE ULANG TAHUN ===== */
+        .cake-scene { margin-bottom: 25px; display: flex; justify-content: center; }
+        .cake {
+            position: relative; display: flex; flex-direction: column; align-items: center;
         }
-        .cake-body {
-            position: relative;
-            width: 120px;
-            height: 70px;
-            background: linear-gradient(180deg, #f97316, #dc2626);
-            border-radius: 10px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        /* Lilin + Api */
+        .candles { display: flex; gap: 22px; margin-bottom: -2px; z-index: 2; }
+        .candle { display: flex; flex-direction: column; align-items: center; }
+        .wick { width: 2px; height: 6px; background: #555; border-radius: 1px; }
+        .flame-wrap { width: 16px; height: 22px; position: relative; margin-bottom: -2px; }
+        .flame-outer {
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 50% 90%, #fbbf24 0%, #f97316 50%, transparent 80%);
+            border-radius: 50% 50% 40% 40%; animation: flicker 0.4s ease-in-out infinite alternate;
+            filter: blur(1px);
         }
-        .cake-body::before {
-            content: "";
-            position: absolute;
-            top: -15px; left: 0;
-            width: 100%; height: 20px;
-            background: linear-gradient(180deg, #fb923c, #f97316);
-            border-radius: 10px 10px 0 0;
+        .flame-inner {
+            position: absolute; top: 30%; left: 25%; width: 50%; height: 50%;
+            background: radial-gradient(ellipse at 50% 90%, #fff 0%, #fde68a 80%);
+            border-radius: 50% 50% 40% 40%; animation: flicker 0.3s ease-in-out infinite alternate-reverse;
         }
-        /* Lilin-lilin */
-        .candles {
-            position: absolute;
-            top: -50px;
-            display: flex;
-            gap: 18px;
-            left: 50%;
-            transform: translateX(-50%);
+        .flame-glow {
+            position: absolute; top: -8px; left: -8px; right: -8px; bottom: -4px;
+            background: radial-gradient(circle, rgba(251,191,36,0.4), transparent 70%);
+            border-radius: 50%; animation: flicker 0.5s ease-in-out infinite alternate;
         }
-        .candle {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .candle-body {
-            width: 10px;
-            height: 30px;
-            border-radius: 3px;
-        }
-        .candle-body.c1 { background: #fbbf24; }
-        .candle-body.c2 { background: #06b6d4; }
-        .candle-body.c3 { background: #10b981; }
-        /* Api Lilin Animasi */
-        .flame {
-            width: 12px;
-            height: 20px;
-            background: radial-gradient(circle at 50% 80%, #fff 0%, #f59e0b 40%, #ef4444 80%, transparent 100%);
-            border-radius: 50% 50% 30% 30%;
-            margin-bottom: 2px;
-            animation: flicker 0.5s ease-in-out infinite alternate;
-            box-shadow: 0 0 10px #f59e0b, 0 0 20px #ef4444;
-        }
-        .flame:nth-child(1) { animation-delay: 0.1s; }
-        .flame:nth-child(2) { animation-delay: 0.3s; }
-        .flame:nth-child(3) { animation-delay: 0.2s; }
         @keyframes flicker {
-            0% { transform: scaleX(1) scaleY(1) rotate(-3deg); opacity: 0.9; }
-            100% { transform: scaleX(0.8) scaleY(1.15) rotate(3deg); opacity: 1; }
+            0% { transform: scaleX(1) scaleY(1) rotate(-2deg); opacity: 0.85; }
+            100% { transform: scaleX(0.85) scaleY(1.1) rotate(2deg); opacity: 1; }
         }
-        /* Dekorasi Kue */
-        .cake-body .dots {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%,-50%);
-            display: flex;
-            gap: 8px;
-        }
-        .cake-body .dot { width: 8px; height: 8px; border-radius: 50%; }
-        .dot.y { background: #fbbf24; }
-        .dot.w { background: #fff; }
+        .stick { width: 8px; height: 28px; border-radius: 3px; }
+        .stick-gold { background: linear-gradient(180deg, #fbbf24, #f59e0b); }
+        .stick-cyan { background: linear-gradient(180deg, #22d3ee, #06b6d4); }
+        .stick-green { background: linear-gradient(180deg, #34d399, #10b981); }
 
-        /* ===== JUDUL ===== */
+        /* Layer kue */
+        .frosting {
+            width: 160px; height: 18px;
+            background: linear-gradient(180deg, #fef3c7, #fde68a);
+            border-radius: 8px 8px 0 0;
+            position: relative; z-index: 1;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .frosting::after {
+            content: ""; position: absolute; bottom: -8px; left: 5px; right: 5px; height: 12px;
+            background: repeating-conic-gradient(#fde68a 0% 25%, #fef3c7 0% 50%) 0 0 / 20px 12px;
+            border-radius: 0 0 6px 6px;
+        }
+        .layer-top {
+            width: 160px; height: 40px;
+            background: linear-gradient(180deg, #f97316, #ea580c);
+            border-radius: 0 0 6px 6px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            box-shadow: inset 0 -4px 10px rgba(0,0,0,0.15);
+        }
+        .layer-bottom {
+            width: 190px; height: 50px; margin-top: -2px;
+            background: linear-gradient(180deg, #dc2626, #b91c1c);
+            border-radius: 6px 6px 10px 10px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3), inset 0 -5px 12px rgba(0,0,0,0.15);
+        }
+        .dot { width: 8px; height: 8px; border-radius: 50%; }
+        .dot-w { background: #fff; }
+        .dot-y { background: #fbbf24; }
+        .dot-c { background: #22d3ee; }
+
+        /* ===== TEKS ===== */
         h1 {
-            font-family: 'Chewy', cursive;
-            font-size: 3.8rem;
+            font-family: 'Chewy', cursive; font-size: 3.5rem;
             background: linear-gradient(90deg, #f59e0b, #f97316, #ef4444, #f59e0b);
             background-size: 300% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: shimmer 4s linear infinite;
-            margin-bottom: 5px;
-            line-height: 1.15;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text; animation: shimmer 4s linear infinite;
+            line-height: 1.15; margin-bottom: 6px;
         }
+        @keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 300% center; } }
 
-        .subtitle {
-            font-size: 0.85rem;
-            font-weight: 300;
-            color: rgba(255,255,255,0.45);
-            letter-spacing: 8px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-        }
+        .subtitle { font-size: 0.8rem; font-weight: 300; color: rgba(255,255,255,0.4); letter-spacing: 7px; text-transform: uppercase; margin-bottom: 18px; }
+        .divider { width: 80px; height: 3px; background: linear-gradient(90deg, #f59e0b, #06b6d4, #8b5cf6); border-radius: 99px; margin: 0 auto 18px auto; }
 
-        .divider {
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(90deg, #f59e0b, #06b6d4, #8b5cf6);
-            border-radius: 99px;
-            margin: 0 auto 20px auto;
-        }
-
-        /* ===== TYPEWRITER PESAN ===== */
-        .message {
-            font-size: 1rem;
-            font-weight: 300;
-            color: rgba(255, 255, 255, 0.82);
-            line-height: 1.9;
-            margin-bottom: 30px;
-            min-height: 100px;
-        }
-        .cursor-type {
-            display: inline-block;
-            width: 2px;
-            height: 1.1em;
-            background: #f59e0b;
-            margin-left: 2px;
-            animation: blink 0.8s step-end infinite;
-            vertical-align: middle;
-        }
+        /* ===== TYPEWRITER ===== */
+        .message { font-size: 1rem; font-weight: 300; color: rgba(255,255,255,0.82); line-height: 1.9; margin-bottom: 22px; min-height: 55px; }
+        .caret { display: inline-block; width: 2px; height: 1em; background: #f59e0b; margin-left: 2px; animation: blink 0.7s step-end infinite; vertical-align: middle; }
         @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
 
-        /* ===== TOMBOL ===== */
-        .btn-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-        button {
-            padding: 13px 30px;
-            font-size: 1rem;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            border: none;
-            border-radius: 50px;
-            cursor: none;
-            transition: all 0.25s;
-            letter-spacing: 0.5px;
-        }
-        .btn-fire {
-            background: linear-gradient(135deg, #f59e0b, #ef4444);
-            color: white;
-            box-shadow: 0 8px 25px rgba(245,158,11,0.45);
-        }
-        .btn-fire:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 15px 35px rgba(245,158,11,0.6); }
-        .btn-again {
-            background: rgba(255,255,255,0.08);
-            color: rgba(255,255,255,0.8);
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        .btn-again:hover { background: rgba(255,255,255,0.18); transform: translateY(-3px); }
-        .btn-wish {
-            background: linear-gradient(135deg, #06b6d4, #8b5cf6);
-            color: white;
-            box-shadow: 0 8px 25px rgba(6,182,212,0.35);
-        }
-        .btn-wish:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 15px 35px rgba(6,182,212,0.5); }
+        /* ===== TIMER ===== */
+        .timer-box { margin-bottom: 22px; padding: 10px 22px; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2); border-radius: 14px; }
+        .timer-label { color: rgba(255,255,255,0.4); font-size: 0.65rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 4px; }
+        .timer-val { color: #f59e0b; font-weight: 600; font-size: 0.95rem; }
 
-        /* ===== MODAL KEJUTAN ===== */
-        .modal-overlay {
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(8px);
-            z-index: 5000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.4s;
+        /* ===== TOMBOL ===== */
+        .btn-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        button { padding: 12px 26px; font-size: 0.95rem; font-family: 'Poppins',sans-serif; font-weight: 600; border: none; border-radius: 50px; cursor: pointer; transition: all 0.25s; letter-spacing: 0.5px; }
+        .btn-fire { background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff; box-shadow: 0 6px 20px rgba(245,158,11,0.4); }
+        .btn-fire:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 12px 30px rgba(245,158,11,0.55); }
+        .btn-sec { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.15); }
+        .btn-sec:hover { background: rgba(255,255,255,0.16); transform: translateY(-3px); }
+        .btn-wish { background: linear-gradient(135deg, #06b6d4, #8b5cf6); color: #fff; box-shadow: 0 6px 20px rgba(6,182,212,0.3); }
+        .btn-wish:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 12px 30px rgba(6,182,212,0.45); }
+
+        /* ===== MUSIK TOMBOL ===== */
+        .music-toggle {
+            position: fixed; top: 20px; right: 20px; z-index: 500;
+            width: 48px; height: 48px; border-radius: 50%;
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px); color: #fff; font-size: 1.4rem;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.3s;
         }
-        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        .music-toggle:hover { background: rgba(255,255,255,0.18); transform: scale(1.1); }
+        .music-toggle.playing .bars { animation: eqBounce 0.5s ease infinite alternate; }
+        .bars { display: flex; gap: 2px; align-items: flex-end; height: 16px; }
+        .bar { width: 3px; background: #f59e0b; border-radius: 2px; }
+        .bar:nth-child(1) { height: 6px; animation-delay: 0s; }
+        .bar:nth-child(2) { height: 12px; animation-delay: 0.15s; }
+        .bar:nth-child(3) { height: 8px; animation-delay: 0.3s; }
+        .bar:nth-child(4) { height: 14px; animation-delay: 0.1s; }
+        @keyframes eqBounce { 0% { height: 4px; } 100% { height: 16px; } }
+
+        /* ===== MODAL ===== */
+        .modal-bg {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.55); backdrop-filter: blur(8px);
+            z-index: 5000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.35s;
+        }
+        .modal-bg.open { opacity: 1; pointer-events: all; }
         .modal {
             background: linear-gradient(135deg, #1e1b4b, #312e81);
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 25px;
-            padding: 50px 40px;
-            max-width: 480px;
-            width: 90%;
-            text-align: center;
-            transform: scale(0.8) translateY(30px);
-            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-            box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.12); border-radius: 24px;
+            padding: 45px 35px; max-width: 460px; width: 90%; text-align: center;
+            transform: scale(0.85) translateY(25px); transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
         }
-        .modal-overlay.active .modal { transform: scale(1) translateY(0); }
-        .modal h2 { font-family: 'Chewy', cursive; font-size: 2.5rem; color: #f59e0b; margin-bottom: 15px; }
-        .modal p { color: rgba(255,255,255,0.8); font-size: 1.05rem; line-height: 1.8; margin-bottom: 25px; }
-        .modal-close {
-            background: linear-gradient(135deg, #f59e0b, #ef4444);
-            color: white;
-            padding: 12px 30px;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: none;
+        .modal-bg.open .modal { transform: scale(1) translateY(0); }
+        .modal h2 { font-family: 'Chewy',cursive; font-size: 2.2rem; color: #f59e0b; margin: 12px 0; }
+        .modal p { color: rgba(255,255,255,0.78); font-size: 1rem; line-height: 1.85; margin-bottom: 22px; }
+        .modal button { background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff; padding: 12px 28px; border-radius: 50px; font-weight: 600; font-size: 1rem; }
+
+        /* ===== HIASAN TERBANG ===== */
+        .deco { position: fixed; font-size: 2.5rem; z-index: 5; animation: floatDeco 7s ease-in-out infinite alternate; pointer-events: none; filter: drop-shadow(0 0 10px rgba(255,255,255,0.25)); }
+        @keyframes floatDeco { 0% { transform: translateY(0) rotate(-8deg); } 100% { transform: translateY(-28px) rotate(8deg); } }
+
+        /* ===== RESPONSIF ===== */
+        @media (max-width: 600px) {
+            h1 { font-size: 2.5rem; }
+            .card { padding: 30px 22px 28px 22px; }
+            .layer-bottom { width: 150px; }
+            .frosting, .layer-top { width: 130px; }
         }
-        .modal-close:hover { transform: scale(1.05); }
-
-        /* ===== FLOATING DECO ===== */
-        .float-deco { position: absolute; font-size: 3rem; z-index: 5; animation: floatDeco 6s ease-in-out infinite alternate; filter: drop-shadow(0 0 15px rgba(255,255,255,0.3)); pointer-events: none; }
-        #d1 { top: 8%; left: 8%; animation-delay: 0s; }
-        #d2 { top: 5%; right: 10%; animation-delay: 1s; font-size: 2.5rem; }
-        #d3 { bottom: 12%; left: 6%; animation-delay: 2s; font-size: 2.5rem; }
-        #d4 { bottom: 8%; right: 8%; animation-delay: 1.5s; }
-        #d5 { top: 45%; left: 2%; animation-delay: 3s; font-size: 2rem; }
-        #d6 { top: 45%; right: 2%; animation-delay: 0.5s; font-size: 2rem; }
-
-        /* ===== TIMER ULTAH ===== */
-        .birthday-timer {
-            margin-top: 20px;
-            padding: 12px 25px;
-            background: rgba(245,158,11,0.1);
-            border: 1px solid rgba(245,158,11,0.3);
-            border-radius: 15px;
-            color: #f59e0b;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
-        }
-        .timer-label { color: rgba(255,255,255,0.5); font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 5px; }
-        .timer-value { font-weight: 600; font-size: 1rem; }
-
-        @keyframes riseUp { to { opacity: 1; transform: translateY(0); } }
-        @keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 300% center; } }
-        @keyframes floatDeco { 0% { transform: translateY(0) rotate(-10deg); } 100% { transform: translateY(-25px) rotate(10deg); } }
     </style>
 </head>
 <body>
 
-    <!-- Custom Cursor -->
-    <div class="cursor" id="cursor"></div>
-    <div class="cursor-ring" id="cursorRing"></div>
+<!-- Custom Cursor (desktop only) -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
-    <!-- Background Layer -->
-    <div class="bg-layer">
-        <div class="glow-orb orb1"></div>
-        <div class="glow-orb orb2"></div>
-        <div class="glow-orb orb3"></div>
-        <div id="starsEl"></div>
-        <div id="meteors"></div>
-    </div>
+<!-- Background -->
+<div class="bg-layer">
+    <div class="glow-orb orb1"></div>
+    <div class="glow-orb orb2"></div>
+    <div class="glow-orb orb3"></div>
+    <div id="starsBox"></div>
+    <div id="meteorsBox"></div>
+</div>
 
-    <!-- Floating Dekorasi -->
-    <div class="float-deco" id="d1">🎈</div>
-    <div class="float-deco" id="d2">✨</div>
-    <div class="float-deco" id="d3">🎁</div>
-    <div class="float-deco" id="d4">🥳</div>
-    <div class="float-deco" id="d5">🎶</div>
-    <div class="float-deco" id="d6">⭐</div>
+<!-- Floating Decorations -->
+<div class="deco" style="top:7%;left:6%;">🎈</div>
+<div class="deco" style="top:4%;right:8%;animation-delay:1.5s;">✨</div>
+<div class="deco" style="bottom:10%;left:5%;animation-delay:2.5s;">🎁</div>
+<div class="deco" style="bottom:6%;right:6%;animation-delay:1s;">🥳</div>
+<div class="deco" style="top:42%;left:2%;animation-delay:3s;font-size:2rem;">🎶</div>
+<div class="deco" style="top:40%;right:2%;animation-delay:0.5s;font-size:2rem;">⭐</div>
 
-    <!-- Main -->
-    <div class="container">
-        <div class="card-wrapper">
-            <div class="card" id="card">
+<!-- Tombol Musik -->
+<div class="music-toggle" id="musicBtn" title="Mainkan musik 🎵">
+    <div class="bars"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+</div>
 
-                <!-- Kue CSS Animasi -->
-                <div class="cake-wrap">
-                    <div class="cake-body">
-                        <div class="candles">
-                            <div class="candle"><div class="flame"></div><div class="candle-body c1"></div></div>
-                            <div class="candle"><div class="flame"></div><div class="candle-body c2"></div></div>
-                            <div class="candle"><div class="flame"></div><div class="candle-body c3"></div></div>
+<!-- Halaman Utama -->
+<div class="page">
+    <div class="card-wrapper">
+        <div class="card" id="card">
+
+            <!-- Kue Ulang Tahun CSS -->
+            <div class="cake-scene">
+                <div class="cake">
+                    <div class="candles">
+                        <div class="candle">
+                            <div class="flame-wrap"><div class="flame-glow"></div><div class="flame-outer"></div><div class="flame-inner"></div></div>
+                            <div class="wick"></div>
+                            <div class="stick stick-gold"></div>
                         </div>
-                        <div class="dots">
-                            <div class="dot y"></div>
-                            <div class="dot w"></div>
-                            <div class="dot y"></div>
+                        <div class="candle">
+                            <div class="flame-wrap"><div class="flame-glow"></div><div class="flame-outer"></div><div class="flame-inner"></div></div>
+                            <div class="wick"></div>
+                            <div class="stick stick-cyan"></div>
+                        </div>
+                        <div class="candle">
+                            <div class="flame-wrap"><div class="flame-glow"></div><div class="flame-outer"></div><div class="flame-inner"></div></div>
+                            <div class="wick"></div>
+                            <div class="stick stick-green"></div>
                         </div>
                     </div>
+                    <div class="frosting"></div>
+                    <div class="layer-top">
+                        <div class="dot dot-w"></div><div class="dot dot-y"></div><div class="dot dot-w"></div><div class="dot dot-y"></div><div class="dot dot-w"></div>
+                    </div>
+                    <div class="layer-bottom">
+                        <div class="dot dot-c"></div><div class="dot dot-w"></div><div class="dot dot-y"></div><div class="dot dot-w"></div><div class="dot dot-c"></div>
+                    </div>
                 </div>
+            </div>
 
-                <h1>Happy Birthday<br>Adek! 🎉</h1>
-                <p class="subtitle">Hari Paling Istimewamu</p>
-                <div class="divider"></div>
+            <h1>Happy Birthday<br>Adek! 🎉</h1>
+            <p class="subtitle">Hari Paling Istimewamu</p>
+            <div class="divider"></div>
 
-                <!-- Pesan Typewriter -->
-                <p class="message" id="typeMsg"><span class="cursor-type"></span></p>
+            <p class="message" id="typeArea"><span class="caret"></span></p>
 
-                <!-- Timer Ulang Tahun -->
-                <div class="birthday-timer">
-                    <div class="timer-label">🕒 Sudah merayakan selama</div>
-                    <div class="timer-value" id="timerVal">Menghitung...</div>
-                </div>
+            <div class="timer-box">
+                <div class="timer-label">🕒 Sudah Merayakan Selama</div>
+                <div class="timer-val" id="timerVal">00 jam 00 menit 00 detik</div>
+            </div>
 
-                <br>
-                <div class="btn-group">
-                    <button class="btn-fire" id="surpriseBtn">🎆 Konfeti Meriah!</button>
-                    <button class="btn-again" id="againBtn">🔁 Lagi!</button>
-                    <button class="btn-wish" id="wishBtn">💌 Pesan Spesial</button>
-                </div>
+            <div class="btn-row">
+                <button class="btn-fire" id="btnFire">🎆 Konfeti Meriah!</button>
+                <button class="btn-sec" id="btnAgain">🔁 Lagi!</button>
+                <button class="btn-wish" id="btnWish">💌 Pesan Spesial</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Modal Pesan Spesial -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal">
-            <div style="font-size:3.5rem; margin-bottom:15px;">💌</div>
-            <h2>Pesan Kakak</h2>
-            <p>
-                Dek, semoga di hari spesial ini kamu selalu bahagia 🌟<br><br>
-                Kamu itu kebanggaan keluarga. Terus tumbuh jadi orang hebat, jangan lupa belajar, sayang orang tua, dan ingat — Mas/Mbak selalu ada buat kamu! 🤗<br><br>
-                Selamat ulang tahun ya gam! ❤️
-            </p>
-            <button class="modal-close" id="modalClose">Tutup pesan! 😊</button>
-        </div>
+<!-- Modal Pesan Spesial -->
+<div class="modal-bg" id="modalBg">
+    <div class="modal">
+        <div style="font-size:3.2rem;">💌</div>
+        <h2>Pesan Dari Kakak</h2>
+        <p>
+            Dek, selamat ulang tahun ya! 🌟<br><br>
+            Semoga hari ini jadi hari paling bahagia buat kamu. Panjang umur, sehat selalu, makin pinter dan sholeh/sholehah. 🙏<br><br>
+            Kamu itu kebanggan keluarga, jangan pernah berhenti bermimpi! Kakak sayang banget sama kamu! 🤗❤️
+        </p>
+        <button id="modalClose">Makasih Kak! 😊</button>
     </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script>
-        // ====================================================
-        // 1. CUSTOM CURSOR + SPARK TRAIL
-        // ====================================================
-        const cursor = document.getElementById('cursor');
-        const cursorRing = document.getElementById('cursorRing');
-        const sparkColors = ['#f59e0b','#ef4444','#06b6d4','#10b981','#8b5cf6','#fff'];
+<!-- Confetti Library -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-        let mouseX = 0, mouseY = 0;
-        document.addEventListener('mousemove', e => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            cursor.style.left = mouseX + 'px';
-            cursor.style.top = mouseY + 'px';
+<!-- Audio HBD (base64 generated tone — silent fallback) -->
+<audio id="bgMusic" loop preload="auto">
+    <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" type="audio/mpeg">
+</audio>
 
-            // Buat percikan bintang di trail
-            if (Math.random() > 0.5) {
-                const spark = document.createElement('div');
-                spark.className = 'spark';
-                const size = Math.random() * 8 + 3;
-                const color = sparkColors[Math.floor(Math.random() * sparkColors.length)];
-                spark.style.cssText = `
-                    width: ${size}px; height: ${size}px;
-                    background: ${color};
-                    left: ${mouseX + (Math.random()-0.5)*20}px;
-                    top: ${mouseY + (Math.random()-0.5)*20}px;
-                    box-shadow: 0 0 8px ${color};
-                `;
-                document.body.appendChild(spark);
-                setTimeout(() => spark.remove(), 600);
-            }
-        });
+<script>
+// ====================================================
+// 1. BINTANG & METEOR
+// ====================================================
+const starsBox = document.getElementById('starsBox');
+for (let i = 0; i < 140; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const sz = Math.random() * 2.5 + 0.5;
+    s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-delay:${Math.random()*4}s;animation-duration:${Math.random()*3+2}s;`;
+    starsBox.appendChild(s);
+}
+const meteorsBox = document.getElementById('meteorsBox');
+for (let i = 0; i < 5; i++) {
+    const m = document.createElement('div');
+    m.className = 'shooting-star';
+    m.style.cssText = `top:${Math.random()*40}%;left:${Math.random()*80}%;animation-delay:${Math.random()*10}s;animation-duration:${4+Math.random()*4}s;`;
+    meteorsBox.appendChild(m);
+}
 
-        // Ring cursor mengikuti dengan delay
-        let ringX = 0, ringY = 0;
-        setInterval(() => {
-            ringX += (mouseX - ringX) * 0.15;
-            ringY += (mouseY - ringY) * 0.15;
-            cursorRing.style.left = ringX + 'px';
-            cursorRing.style.top = ringY + 'px';
-        }, 16);
+// ====================================================
+// 2. CUSTOM CURSOR + SPARK TRAIL (desktop)
+// ====================================================
+const dot = document.getElementById('cursorDot');
+const ring = document.getElementById('cursorRing');
+const sparkCol = ['#f59e0b','#ef4444','#06b6d4','#10b981','#8b5cf6','#fff'];
+let mx = -100, my = -100, rx = -100, ry = -100;
 
-        // ====================================================
-        // 2. BINTANG & METEOR BACKGROUND
-        // ====================================================
-        const starsEl = document.getElementById('starsEl');
-        for (let i = 0; i < 130; i++) {
-            const s = document.createElement('div');
-            s.className = 'star';
-            const sz = Math.random() * 2.5 + 0.5;
-            s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-delay:${Math.random()*3}s;animation-duration:${Math.random()*3+2}s;`;
-            starsEl.appendChild(s);
+if (window.matchMedia('(hover: hover)').matches) {
+    document.addEventListener('mousemove', e => {
+        mx = e.clientX; my = e.clientY;
+        dot.style.left = mx+'px'; dot.style.top = my+'px';
+        if (Math.random() > 0.55) {
+            const sp = document.createElement('div');
+            sp.className = 'spark';
+            const sz = Math.random()*7+2;
+            const c = sparkCol[Math.floor(Math.random()*sparkCol.length)];
+            sp.style.cssText = `width:${sz}px;height:${sz}px;background:${c};left:${mx+(Math.random()-0.5)*18}px;top:${my+(Math.random()-0.5)*18}px;box-shadow:0 0 6px ${c};`;
+            document.body.appendChild(sp);
+            setTimeout(() => sp.remove(), 500);
         }
+    });
+    setInterval(() => {
+        rx += (mx-rx)*0.14; ry += (my-ry)*0.14;
+        ring.style.left = rx+'px'; ring.style.top = ry+'px';
+    }, 16);
+}
 
-        const meteorsEl = document.getElementById('meteors');
-        for (let i = 0; i < 6; i++) {
-            const m = document.createElement('div');
-            m.className = 'shooting-star';
-            m.style.cssText = `top:${Math.random()*50}%;left:${Math.random()*100}%;width:${100+Math.random()*100}px;animation-delay:${Math.random()*8}s;animation-duration:${3+Math.random()*3}s;`;
-            meteorsEl.appendChild(m);
-        }
+// ====================================================
+// 3. KARTU 3D TILT (desktop)
+// ====================================================
+const card = document.getElementById('card');
+if (window.matchMedia('(hover: hover)').matches) {
+    document.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const cx = r.left + r.width/2, cy = r.top + r.height/2;
+        const dx = (e.clientX - cx) / (r.width/2);
+        const dy = (e.clientY - cy) / (r.height/2);
+        card.style.transform = `rotateY(${dx*6}deg) rotateX(${-dy*6}deg)`;
+    });
+}
 
-        // ====================================================
-        // 3. EFEK 3D TILT PADA KARTU
-        // ====================================================
-        const card = document.getElementById('card');
-        document.addEventListener('mousemove', e => {
-            const rect = card.getBoundingClientRect();
-            const cx = rect.left + rect.width / 2;
-            const cy = rect.top + rect.height / 2;
-            const dx = (e.clientX - cx) / (rect.width / 2);
-            const dy = (e.clientY - cy) / (rect.height / 2);
-            card.style.transform = `rotateY(${dx * 8}deg) rotateX(${-dy * 8}deg)`;
-            card.style.boxShadow = `${-dx*20}px ${-dy*20}px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.2)`;
-        });
-        document.addEventListener('mouseleave', () => {
-            card.style.transform = 'rotateY(0) rotateX(0)';
-        });
+// ====================================================
+// 4. TYPEWRITER
+// ====================================================
+const msgs = [
+    "Selamat ulang tahun, Adek! 🎉",
+    "Semoga panjang umur & sehat selalu ✨",
+    "Makin pinter, makin sholeh/sholehah 🙏",
+    "Jadi kebanggaan keluarga! 🌟",
+    "Kakak sayang banget sama kamu! ❤️"
+];
+const typeArea = document.getElementById('typeArea');
+let mi = 0, ci = 0, del = false;
 
-        // ====================================================
-        // 4. TYPEWRITER EFFECT
-        // ====================================================
-        const msgEl = document.getElementById('typeMsg');
-        const messages = [
-            "Selamat ulang tahun, Adek! 🎉",
-            "Semoga panjang umur & sehat selalu ✨",
-            "Makin pinter, makin sholeh/sholehah 🙏",
-            "Jadi kebanggaan keluarga ya! 🌟",
-            "Kakak sayang banget sama kamu! ❤️"
-        ];
-        let msgIdx = 0, charIdx = 0, deleting = false;
+function type() {
+    const cur = msgs[mi], caret = '<span class="caret"></span>';
+    if (!del && ci <= cur.length) { typeArea.innerHTML = cur.substring(0,ci)+caret; ci++; setTimeout(type, 65); }
+    else if (!del) { del = true; setTimeout(type, 2200); }
+    else if (del && ci > 0) { typeArea.innerHTML = cur.substring(0,ci)+caret; ci--; setTimeout(type, 35); }
+    else { del = false; mi = (mi+1) % msgs.length; setTimeout(type, 400); }
+}
+setTimeout(type, 1200);
 
-        function typeWriter() {
-            const current = messages[msgIdx];
-            const cursor = '<span class="cursor-type"></span>';
+// ====================================================
+// 5. TIMER
+// ====================================================
+function tick() {
+    const now = new Date(), s0 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const d = now - s0;
+    const h = Math.floor(d/36e5), m = Math.floor((d%36e5)/6e4), s = Math.floor((d%6e4)/1e3);
+    document.getElementById('timerVal').textContent = `${String(h).padStart(2,'0')} jam ${String(m).padStart(2,'0')} menit ${String(s).padStart(2,'0')} detik`;
+}
+tick(); setInterval(tick, 1000);
 
-            if (!deleting && charIdx <= current.length) {
-                msgEl.innerHTML = current.substring(0, charIdx) + cursor;
-                charIdx++;
-                setTimeout(typeWriter, 70);
-            } else if (!deleting && charIdx > current.length) {
-                deleting = true;
-                setTimeout(typeWriter, 2000);
-            } else if (deleting && charIdx > 0) {
-                msgEl.innerHTML = current.substring(0, charIdx) + cursor;
-                charIdx--;
-                setTimeout(typeWriter, 40);
-            } else {
-                deleting = false;
-                msgIdx = (msgIdx + 1) % messages.length;
-                setTimeout(typeWriter, 400);
-            }
-        }
-        setTimeout(typeWriter, 1500);
+// ====================================================
+// 6. CONFETTI
+// ====================================================
+const CC = ['#f59e0b','#ef4444','#06b6d4','#10b981','#8b5cf6','#f97316','#fff'];
 
-        // ====================================================
-        // 5. BIRTHDAY TIMER (waktu berlalu sejak hari ini dimulai)
-        // ====================================================
-        function updateTimer() {
-            const now = new Date();
-            const start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0);
-            const diff = now - start;
-            const h = Math.floor(diff / 3600000);
-            const m = Math.floor((diff % 3600000) / 60000);
-            const s = Math.floor((diff % 60000) / 1000);
-            document.getElementById('timerVal').textContent =
-                `${String(h).padStart(2,'0')} jam ${String(m).padStart(2,'0')} menit ${String(s).padStart(2,'0')} detik`;
-        }
-        updateTimer();
-        setInterval(updateTimer, 1000);
+function boom() {
+    confetti({ particleCount: 130, spread: 100, origin: { y: 0.75 }, colors: CC, startVelocity: 55, ticks: 250 });
+    const end = Date.now() + 3500;
+    const iv = setInterval(() => {
+        if (Date.now() > end) return clearInterval(iv);
+        const t = (end - Date.now()) / 3500;
+        confetti({ particleCount: Math.floor(35*t), angle: 60, spread: 55, origin: { x: 0 }, colors: CC, startVelocity: 60 });
+        confetti({ particleCount: Math.floor(35*t), angle: 120, spread: 55, origin: { x: 1 }, colors: CC, startVelocity: 60 });
+    }, 280);
+}
 
-        // ====================================================
-        // 6. CONFETTI SPEKTAKULER
-        // ====================================================
-        const COLORS = ['#f59e0b','#ef4444','#06b6d4','#10b981','#8b5cf6','#f97316','#ffffff'];
+document.getElementById('btnFire').addEventListener('click', function() {
+    boom();
+    this.textContent = '🎊 YAYYY!!!';
+    setTimeout(() => { this.textContent = '🎆 Konfeti Meriah!'; }, 3800);
+});
+document.getElementById('btnAgain').addEventListener('click', boom);
 
-        function launchFireworks() {
-            const end = Date.now() + 4000;
-            confetti({ particleCount: 120, spread: 110, origin: { y: 0.8 }, colors: COLORS, startVelocity: 55, ticks: 250 });
-            const interval = setInterval(() => {
-                if (Date.now() > end) return clearInterval(interval);
-                const tl = (end - Date.now()) / 4000;
-                confetti({ particleCount: Math.floor(40*tl), angle: 60, spread: 60, origin: { x: 0 }, colors: COLORS, startVelocity: 65 });
-                confetti({ particleCount: Math.floor(40*tl), angle: 120, spread: 60, origin: { x: 1 }, colors: COLORS, startVelocity: 65 });
-            }, 280);
-        }
+// ====================================================
+// 7. MODAL
+// ====================================================
+const modalBg = document.getElementById('modalBg');
+document.getElementById('btnWish').addEventListener('click', () => {
+    modalBg.classList.add('open');
+    confetti({ particleCount: 50, spread: 70, origin: { y: 0.45 }, colors: CC });
+});
+document.getElementById('modalClose').addEventListener('click', () => modalBg.classList.remove('open'));
+modalBg.addEventListener('click', e => { if (e.target === modalBg) modalBg.classList.remove('open'); });
 
-        document.getElementById('surpriseBtn').addEventListener('click', () => {
-            launchFireworks();
-            document.getElementById('surpriseBtn').innerHTML = '🎊 HOORAYYYY!!!';
-            setTimeout(() => { document.getElementById('surpriseBtn').innerHTML = '🎆 Konfeti Meriah!'; }, 4000);
-        });
+// ====================================================
+// 8. MUSIK TOGGLE
+// ====================================================
+const audio = document.getElementById('bgMusic');
+const musicBtn = document.getElementById('musicBtn');
+let isPlaying = false;
+musicBtn.addEventListener('click', () => {
+    if (isPlaying) { audio.pause(); musicBtn.classList.remove('playing'); }
+    else { audio.play().catch(()=>{}); musicBtn.classList.add('playing'); }
+    isPlaying = !isPlaying;
+});
 
-        document.getElementById('againBtn').addEventListener('click', () => launchFireworks());
-
-        // ====================================================
-        // 7. MODAL PESAN SPESIAL
-        // ====================================================
-        const overlay = document.getElementById('modalOverlay');
-        document.getElementById('wishBtn').addEventListener('click', () => {
-            overlay.classList.add('active');
-            // mini confetti saat modal muncul
-            confetti({ particleCount: 60, spread: 80, origin: { y: 0.4 }, colors: COLORS });
-        });
-        document.getElementById('modalClose').addEventListener('click', () => {
-            overlay.classList.remove('active');
-        });
-        overlay.addEventListener('click', e => {
-            if (e.target === overlay) overlay.classList.remove('active');
-        });
-
-        // ====================================================
-        // AUTO CONFETTI saat pertama buka
-        // ====================================================
-        setTimeout(launchFireworks, 1000);
-    </script>
+// ====================================================
+// AUTO CONFETTI saat pertama buka
+// ====================================================
+setTimeout(boom, 800);
+</script>
 </body>
 </html>
