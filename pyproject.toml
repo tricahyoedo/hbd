@@ -1,0 +1,9 @@
+[project]
+name = "hbd"
+version = "1.0.0"
+dependencies = [
+    "Flask"
+]
+
+[tool.vercel]
+entrypoint = "app:app"
