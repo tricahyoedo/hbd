@@ -9,10 +9,8 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body, html {
-            width: 100%;
-            height: 100%;
-            overflow-x: hidden;
-            overflow-y: auto;
+            width: 100%; height: 100%;
+            overflow-x: hidden; overflow-y: auto;
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
             min-height: 100vh;
@@ -24,13 +22,11 @@
         .orb1 { width: 500px; height: 500px; background: #7c3aed; top: -200px; left: -150px; }
         .orb2 { width: 400px; height: 400px; background: #f59e0b; bottom: -150px; right: -100px; animation-delay: 4s; }
         .orb3 { width: 300px; height: 300px; background: #06b6d4; top: 50%; left: 50%; transform: translateX(-50%); animation-delay: 8s; }
-        @keyframes orbDrift { 0% { transform: translate(0, 0); } 100% { transform: translate(40px, 30px); } }
+        @keyframes orbDrift { 0% { transform: translate(0,0); } 100% { transform: translate(40px,30px); } }
 
-        /* ===== BINTANG ===== */
         .star { position: absolute; background: #fff; border-radius: 50%; animation: twinkle 3s infinite alternate; }
         @keyframes twinkle { 0% { opacity: 0.1; } 100% { opacity: 0.9; } }
 
-        /* ===== METEOR ===== */
         .shooting-star {
             position: absolute; height: 2px;
             background: linear-gradient(90deg, #fff, transparent);
@@ -42,109 +38,57 @@
             100% { transform: translateX(100vw) translateY(200px) rotate(-25deg); opacity: 0; width: 0; }
         }
 
-        /* ===== CUSTOM CURSOR ===== */
-        .cursor-dot { width: 14px; height: 14px; background: radial-gradient(circle, #f59e0b, #ef4444); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); box-shadow: 0 0 12px #f59e0b; transition: transform 0.05s; }
-        .cursor-ring { width: 36px; height: 36px; border: 2px solid rgba(245,158,11,0.4); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transform: translate(-50%, -50%); }
+        /* ===== CURSOR (desktop) ===== */
+        .cursor-dot { width: 14px; height: 14px; background: radial-gradient(circle, #f59e0b, #ef4444); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); box-shadow: 0 0 12px #f59e0b; }
+        .cursor-ring { width: 36px; height: 36px; border: 2px solid rgba(245,158,11,0.4); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); }
         .spark { position: fixed; border-radius: 50%; pointer-events: none; z-index: 9997; animation: sparkOut 0.5s ease-out forwards; }
-        @keyframes sparkOut { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
+        @keyframes sparkOut { 0% { opacity:1; transform:scale(1); } 100% { opacity:0; transform:scale(0); } }
+        @media (hover: none) { .cursor-dot, .cursor-ring { display: none; } body { cursor: auto; } }
+        @media (hover: hover) { body { cursor: none; } }
 
-        @media (hover: none) {
-            .cursor-dot, .cursor-ring { display: none; }
-            body { cursor: auto; }
-        }
-        @media (hover: hover) {
-            body { cursor: none; }
-        }
-
-        /* ===== KONTAINER UTAMA ===== */
+        /* ===== LAYOUT ===== */
         .page {
             position: relative; z-index: 10;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             min-height: 100vh; padding: 40px 20px;
         }
 
-        /* ===== KARTU UTAMA ===== */
+        /* ===== KARTU ===== */
         .card-wrapper { perspective: 1200px; width: 100%; max-width: 580px; }
         .card {
             background: rgba(255,255,255,0.06);
             border: 1px solid rgba(255,255,255,0.12);
             backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-            border-radius: 28px;
-            padding: 40px 35px 35px 35px;
+            border-radius: 28px; padding: 40px 35px 35px 35px;
             text-align: center;
             box-shadow: 0 25px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
-            animation: cardIn 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            animation: cardIn 1s cubic-bezier(0.22,1,0.36,1) forwards;
             opacity: 0; transform: translateY(50px);
             transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
         }
-        @keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
+        @keyframes cardIn { to { opacity:1; transform:translateY(0); } }
 
-        /* ===== KUE ULANG TAHUN ===== */
+        /* ===== KUE ===== */
         .cake-scene { margin-bottom: 25px; display: flex; justify-content: center; }
-        .cake {
-            position: relative; display: flex; flex-direction: column; align-items: center;
-        }
-        /* Lilin + Api */
+        .cake { position: relative; display: flex; flex-direction: column; align-items: center; }
         .candles { display: flex; gap: 22px; margin-bottom: -2px; z-index: 2; }
         .candle { display: flex; flex-direction: column; align-items: center; }
         .wick { width: 2px; height: 6px; background: #555; border-radius: 1px; }
         .flame-wrap { width: 16px; height: 22px; position: relative; margin-bottom: -2px; }
-        .flame-outer {
-            position: absolute; inset: 0;
-            background: radial-gradient(ellipse at 50% 90%, #fbbf24 0%, #f97316 50%, transparent 80%);
-            border-radius: 50% 50% 40% 40%; animation: flicker 0.4s ease-in-out infinite alternate;
-            filter: blur(1px);
-        }
-        .flame-inner {
-            position: absolute; top: 30%; left: 25%; width: 50%; height: 50%;
-            background: radial-gradient(ellipse at 50% 90%, #fff 0%, #fde68a 80%);
-            border-radius: 50% 50% 40% 40%; animation: flicker 0.3s ease-in-out infinite alternate-reverse;
-        }
-        .flame-glow {
-            position: absolute; top: -8px; left: -8px; right: -8px; bottom: -4px;
-            background: radial-gradient(circle, rgba(251,191,36,0.4), transparent 70%);
-            border-radius: 50%; animation: flicker 0.5s ease-in-out infinite alternate;
-        }
-        @keyframes flicker {
-            0% { transform: scaleX(1) scaleY(1) rotate(-2deg); opacity: 0.85; }
-            100% { transform: scaleX(0.85) scaleY(1.1) rotate(2deg); opacity: 1; }
-        }
+        .flame-outer { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 90%, #fbbf24 0%, #f97316 50%, transparent 80%); border-radius: 50% 50% 40% 40%; animation: flicker 0.4s ease-in-out infinite alternate; filter: blur(1px); }
+        .flame-inner { position: absolute; top: 30%; left: 25%; width: 50%; height: 50%; background: radial-gradient(ellipse at 50% 90%, #fff 0%, #fde68a 80%); border-radius: 50% 50% 40% 40%; animation: flicker 0.3s ease-in-out infinite alternate-reverse; }
+        .flame-glow { position: absolute; top: -8px; left: -8px; right: -8px; bottom: -4px; background: radial-gradient(circle, rgba(251,191,36,0.4), transparent 70%); border-radius: 50%; animation: flicker 0.5s ease-in-out infinite alternate; }
+        @keyframes flicker { 0% { transform: scaleX(1) scaleY(1) rotate(-2deg); opacity:0.85; } 100% { transform: scaleX(0.85) scaleY(1.1) rotate(2deg); opacity:1; } }
         .stick { width: 8px; height: 28px; border-radius: 3px; }
         .stick-gold { background: linear-gradient(180deg, #fbbf24, #f59e0b); }
         .stick-cyan { background: linear-gradient(180deg, #22d3ee, #06b6d4); }
         .stick-green { background: linear-gradient(180deg, #34d399, #10b981); }
-
-        /* Layer kue */
-        .frosting {
-            width: 160px; height: 18px;
-            background: linear-gradient(180deg, #fef3c7, #fde68a);
-            border-radius: 8px 8px 0 0;
-            position: relative; z-index: 1;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        }
-        .frosting::after {
-            content: ""; position: absolute; bottom: -8px; left: 5px; right: 5px; height: 12px;
-            background: repeating-conic-gradient(#fde68a 0% 25%, #fef3c7 0% 50%) 0 0 / 20px 12px;
-            border-radius: 0 0 6px 6px;
-        }
-        .layer-top {
-            width: 160px; height: 40px;
-            background: linear-gradient(180deg, #f97316, #ea580c);
-            border-radius: 0 0 6px 6px;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            box-shadow: inset 0 -4px 10px rgba(0,0,0,0.15);
-        }
-        .layer-bottom {
-            width: 190px; height: 50px; margin-top: -2px;
-            background: linear-gradient(180deg, #dc2626, #b91c1c);
-            border-radius: 6px 6px 10px 10px;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3), inset 0 -5px 12px rgba(0,0,0,0.15);
-        }
+        .frosting { width: 160px; height: 18px; background: linear-gradient(180deg, #fef3c7, #fde68a); border-radius: 8px 8px 0 0; position: relative; z-index: 1; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+        .frosting::after { content: ""; position: absolute; bottom: -8px; left: 5px; right: 5px; height: 12px; background: repeating-conic-gradient(#fde68a 0% 25%, #fef3c7 0% 50%) 0 0 / 20px 12px; border-radius: 0 0 6px 6px; }
+        .layer-top { width: 160px; height: 40px; background: linear-gradient(180deg, #f97316, #ea580c); border-radius: 0 0 6px 6px; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: inset 0 -4px 10px rgba(0,0,0,0.15); }
+        .layer-bottom { width: 190px; height: 50px; margin-top: -2px; background: linear-gradient(180deg, #dc2626, #b91c1c); border-radius: 6px 6px 10px 10px; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 8px 20px rgba(0,0,0,0.3), inset 0 -5px 12px rgba(0,0,0,0.15); }
         .dot { width: 8px; height: 8px; border-radius: 50%; }
-        .dot-w { background: #fff; }
-        .dot-y { background: #fbbf24; }
-        .dot-c { background: #22d3ee; }
+        .dot-w { background: #fff; } .dot-y { background: #fbbf24; } .dot-c { background: #22d3ee; }
 
         /* ===== TEKS ===== */
         h1 {
@@ -156,48 +100,24 @@
             line-height: 1.15; margin-bottom: 6px;
         }
         @keyframes shimmer { 0% { background-position: 0% center; } 100% { background-position: 300% center; } }
-
         .subtitle { font-size: 0.8rem; font-weight: 300; color: rgba(255,255,255,0.4); letter-spacing: 7px; text-transform: uppercase; margin-bottom: 18px; }
         .divider { width: 80px; height: 3px; background: linear-gradient(90deg, #f59e0b, #06b6d4, #8b5cf6); border-radius: 99px; margin: 0 auto 18px auto; }
 
         /* ===== TYPEWRITER ===== */
-        .message { font-size: 1rem; font-weight: 300; color: rgba(255,255,255,0.82); line-height: 1.9; margin-bottom: 22px; min-height: 55px; }
+        .message { font-size: 1rem; font-weight: 300; color: rgba(255,255,255,0.82); line-height: 1.9; margin-bottom: 28px; min-height: 55px; }
         .caret { display: inline-block; width: 2px; height: 1em; background: #f59e0b; margin-left: 2px; animation: blink 0.7s step-end infinite; vertical-align: middle; }
-        @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0; } }
-
-        /* ===== TIMER ===== */
-        .timer-box { margin-bottom: 22px; padding: 10px 22px; background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2); border-radius: 14px; }
-        .timer-label { color: rgba(255,255,255,0.4); font-size: 0.65rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 4px; }
-        .timer-val { color: #f59e0b; font-weight: 600; font-size: 0.95rem; }
+        @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
 
         /* ===== TOMBOL ===== */
-        .btn-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-        button { padding: 12px 26px; font-size: 0.95rem; font-family: 'Poppins',sans-serif; font-weight: 600; border: none; border-radius: 50px; cursor: pointer; transition: all 0.25s; letter-spacing: 0.5px; }
-        .btn-fire { background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff; box-shadow: 0 6px 20px rgba(245,158,11,0.4); }
-        .btn-fire:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 12px 30px rgba(245,158,11,0.55); }
-        .btn-sec { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.15); }
-        .btn-sec:hover { background: rgba(255,255,255,0.16); transform: translateY(-3px); }
-        .btn-wish { background: linear-gradient(135deg, #06b6d4, #8b5cf6); color: #fff; box-shadow: 0 6px 20px rgba(6,182,212,0.3); }
-        .btn-wish:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 12px 30px rgba(6,182,212,0.45); }
-
-        /* ===== MUSIK TOMBOL ===== */
-        .music-toggle {
-            position: fixed; top: 20px; right: 20px; z-index: 500;
-            width: 48px; height: 48px; border-radius: 50%;
-            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
-            backdrop-filter: blur(10px); color: #fff; font-size: 1.4rem;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.3s;
+        button {
+            padding: 14px 35px; font-size: 1.05rem; font-family: 'Poppins',sans-serif; font-weight: 600;
+            border: none; border-radius: 50px; cursor: pointer; transition: all 0.25s; letter-spacing: 0.5px;
         }
-        .music-toggle:hover { background: rgba(255,255,255,0.18); transform: scale(1.1); }
-        .music-toggle.playing .bars { animation: eqBounce 0.5s ease infinite alternate; }
-        .bars { display: flex; gap: 2px; align-items: flex-end; height: 16px; }
-        .bar { width: 3px; background: #f59e0b; border-radius: 2px; }
-        .bar:nth-child(1) { height: 6px; animation-delay: 0s; }
-        .bar:nth-child(2) { height: 12px; animation-delay: 0.15s; }
-        .bar:nth-child(3) { height: 8px; animation-delay: 0.3s; }
-        .bar:nth-child(4) { height: 14px; animation-delay: 0.1s; }
-        @keyframes eqBounce { 0% { height: 4px; } 100% { height: 16px; } }
+        .btn-wish {
+            background: linear-gradient(135deg, #06b6d4, #8b5cf6); color: #fff;
+            box-shadow: 0 8px 25px rgba(6,182,212,0.35);
+        }
+        .btn-wish:hover { transform: translateY(-4px) scale(1.04); box-shadow: 0 14px 35px rgba(6,182,212,0.5); }
 
         /* ===== MODAL ===== */
         .modal-bg {
@@ -218,11 +138,10 @@
         .modal p { color: rgba(255,255,255,0.78); font-size: 1rem; line-height: 1.85; margin-bottom: 22px; }
         .modal button { background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff; padding: 12px 28px; border-radius: 50px; font-weight: 600; font-size: 1rem; }
 
-        /* ===== HIASAN TERBANG ===== */
+        /* ===== HIASAN ===== */
         .deco { position: fixed; font-size: 2.5rem; z-index: 5; animation: floatDeco 7s ease-in-out infinite alternate; pointer-events: none; filter: drop-shadow(0 0 10px rgba(255,255,255,0.25)); }
         @keyframes floatDeco { 0% { transform: translateY(0) rotate(-8deg); } 100% { transform: translateY(-28px) rotate(8deg); } }
 
-        /* ===== RESPONSIF ===== */
         @media (max-width: 600px) {
             h1 { font-size: 2.5rem; }
             .card { padding: 30px 22px 28px 22px; }
@@ -233,11 +152,9 @@
 </head>
 <body>
 
-<!-- Custom Cursor (desktop only) -->
 <div class="cursor-dot" id="cursorDot"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
-<!-- Background -->
 <div class="bg-layer">
     <div class="glow-orb orb1"></div>
     <div class="glow-orb orb2"></div>
@@ -246,7 +163,6 @@
     <div id="meteorsBox"></div>
 </div>
 
-<!-- Floating Decorations -->
 <div class="deco" style="top:7%;left:6%;">🎈</div>
 <div class="deco" style="top:4%;right:8%;animation-delay:1.5s;">✨</div>
 <div class="deco" style="bottom:10%;left:5%;animation-delay:2.5s;">🎁</div>
@@ -254,67 +170,33 @@
 <div class="deco" style="top:42%;left:2%;animation-delay:3s;font-size:2rem;">🎶</div>
 <div class="deco" style="top:40%;right:2%;animation-delay:0.5s;font-size:2rem;">⭐</div>
 
-<!-- Tombol Musik -->
-<div class="music-toggle" id="musicBtn" title="Mainkan musik 🎵">
-    <div class="bars"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
-</div>
-
-<!-- Halaman Utama -->
 <div class="page">
     <div class="card-wrapper">
         <div class="card" id="card">
-
-            <!-- Kue Ulang Tahun CSS -->
             <div class="cake-scene">
                 <div class="cake">
                     <div class="candles">
-                        <div class="candle">
-                            <div class="flame-wrap"><div class="flame-glow"></div><div class="flame-outer"></div><div class="flame-inner"></div></div>
-                            <div class="wick"></div>
-                            <div class="stick stick-gold"></div>
-                        </div>
-                        <div class="candle">
-                            <div class="flame-wrap"><div class="flame-glow"></div><div class="flame-outer"></div><div class="flame-inner"></div></div>
-                            <div class="wick"></div>
-                            <div class="stick stick-cyan"></div>
-                        </div>
-                        <div class="candle">
-                            <div class="flame-wrap"><div class="flame-glow"></div><div class="flame-outer"></div><div class="flame-inner"></div></div>
-                            <div class="wick"></div>
-                            <div class="stick stick-green"></div>
-                        </div>
+                        <div class="candle"><div class="flame-wrap"><div class="flame-glow"></div><div class="flame-outer"></div><div class="flame-inner"></div></div><div class="wick"></div><div class="stick stick-gold"></div></div>
+                        <div class="candle"><div class="flame-wrap"><div class="flame-glow"></div><div class="flame-outer"></div><div class="flame-inner"></div></div><div class="wick"></div><div class="stick stick-cyan"></div></div>
+                        <div class="candle"><div class="flame-wrap"><div class="flame-glow"></div><div class="flame-outer"></div><div class="flame-inner"></div></div><div class="wick"></div><div class="stick stick-green"></div></div>
                     </div>
                     <div class="frosting"></div>
-                    <div class="layer-top">
-                        <div class="dot dot-w"></div><div class="dot dot-y"></div><div class="dot dot-w"></div><div class="dot dot-y"></div><div class="dot dot-w"></div>
-                    </div>
-                    <div class="layer-bottom">
-                        <div class="dot dot-c"></div><div class="dot dot-w"></div><div class="dot dot-y"></div><div class="dot dot-w"></div><div class="dot dot-c"></div>
-                    </div>
+                    <div class="layer-top"><div class="dot dot-w"></div><div class="dot dot-y"></div><div class="dot dot-w"></div><div class="dot dot-y"></div><div class="dot dot-w"></div></div>
+                    <div class="layer-bottom"><div class="dot dot-c"></div><div class="dot dot-w"></div><div class="dot dot-y"></div><div class="dot dot-w"></div><div class="dot dot-c"></div></div>
                 </div>
             </div>
 
             <h1>Happy Birthday<br>Adek! 🎉</h1>
             <p class="subtitle">Hari Paling Istimewamu</p>
             <div class="divider"></div>
-
             <p class="message" id="typeArea"><span class="caret"></span></p>
 
-            <div class="timer-box">
-                <div class="timer-label">🕒 Sudah Merayakan Selama</div>
-                <div class="timer-val" id="timerVal">00 jam 00 menit 00 detik</div>
-            </div>
-
-            <div class="btn-row">
-                <button class="btn-fire" id="btnFire">🎆 Konfeti Meriah!</button>
-                <button class="btn-sec" id="btnAgain">🔁 Lagi!</button>
-                <button class="btn-wish" id="btnWish">💌 Pesan Spesial</button>
-            </div>
+            <button class="btn-wish" id="btnWish">💌 Pesan Spesial</button>
         </div>
     </div>
 </div>
 
-<!-- Modal Pesan Spesial -->
+<!-- Modal -->
 <div class="modal-bg" id="modalBg">
     <div class="modal">
         <div style="font-size:3.2rem;">💌</div>
@@ -322,29 +204,20 @@
         <p>
             Dek, selamat ulang tahun ya! 🌟<br><br>
             Semoga hari ini jadi hari paling bahagia buat kamu. Panjang umur, sehat selalu, makin pinter dan sholeh/sholehah. 🙏<br><br>
-            Kamu itu kebanggan keluarga, jangan pernah berhenti bermimpi! Kakak sayang banget sama kamu! 🤗❤️
+            Kamu itu kebanggaan keluarga, jangan pernah berhenti bermimpi! Kakak sayang banget sama kamu! 🤗❤️
         </p>
         <button id="modalClose">Tutup pesan! 😊</button>
     </div>
 </div>
 
-<!-- Confetti Library -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-<!-- Audio HBD (base64 generated tone — silent fallback) -->
-<audio id="bgMusic" loop preload="auto">
-    <source src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3" type="audio/mpeg">
-</audio>
-
 <script>
-// ====================================================
-// 1. BINTANG & METEOR
-// ====================================================
+// ===== BINTANG & METEOR =====
 const starsBox = document.getElementById('starsBox');
 for (let i = 0; i < 140; i++) {
     const s = document.createElement('div');
     s.className = 'star';
-    const sz = Math.random() * 2.5 + 0.5;
+    const sz = Math.random()*2.5+0.5;
     s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-delay:${Math.random()*4}s;animation-duration:${Math.random()*3+2}s;`;
     starsBox.appendChild(s);
 }
@@ -356,131 +229,161 @@ for (let i = 0; i < 5; i++) {
     meteorsBox.appendChild(m);
 }
 
-// ====================================================
-// 2. CUSTOM CURSOR + SPARK TRAIL (desktop)
-// ====================================================
+// ===== CURSOR + SPARK (desktop) =====
 const dot = document.getElementById('cursorDot');
 const ring = document.getElementById('cursorRing');
 const sparkCol = ['#f59e0b','#ef4444','#06b6d4','#10b981','#8b5cf6','#fff'];
 let mx = -100, my = -100, rx = -100, ry = -100;
-
-if (window.matchMedia('(hover: hover)').matches) {
+if (window.matchMedia('(hover:hover)').matches) {
     document.addEventListener('mousemove', e => {
         mx = e.clientX; my = e.clientY;
         dot.style.left = mx+'px'; dot.style.top = my+'px';
         if (Math.random() > 0.55) {
             const sp = document.createElement('div');
             sp.className = 'spark';
-            const sz = Math.random()*7+2;
-            const c = sparkCol[Math.floor(Math.random()*sparkCol.length)];
+            const sz = Math.random()*7+2, c = sparkCol[Math.floor(Math.random()*sparkCol.length)];
             sp.style.cssText = `width:${sz}px;height:${sz}px;background:${c};left:${mx+(Math.random()-0.5)*18}px;top:${my+(Math.random()-0.5)*18}px;box-shadow:0 0 6px ${c};`;
             document.body.appendChild(sp);
             setTimeout(() => sp.remove(), 500);
         }
     });
-    setInterval(() => {
-        rx += (mx-rx)*0.14; ry += (my-ry)*0.14;
-        ring.style.left = rx+'px'; ring.style.top = ry+'px';
-    }, 16);
+    setInterval(() => { rx+=(mx-rx)*0.14; ry+=(my-ry)*0.14; ring.style.left=rx+'px'; ring.style.top=ry+'px'; }, 16);
 }
 
-// ====================================================
-// 3. KARTU 3D TILT (desktop)
-// ====================================================
+// ===== 3D TILT =====
 const card = document.getElementById('card');
-if (window.matchMedia('(hover: hover)').matches) {
+if (window.matchMedia('(hover:hover)').matches) {
     document.addEventListener('mousemove', e => {
         const r = card.getBoundingClientRect();
-        const cx = r.left + r.width/2, cy = r.top + r.height/2;
-        const dx = (e.clientX - cx) / (r.width/2);
-        const dy = (e.clientY - cy) / (r.height/2);
+        const dx = (e.clientX - (r.left+r.width/2)) / (r.width/2);
+        const dy = (e.clientY - (r.top+r.height/2)) / (r.height/2);
         card.style.transform = `rotateY(${dx*6}deg) rotateX(${-dy*6}deg)`;
     });
 }
 
-// ====================================================
-// 4. TYPEWRITER
-// ====================================================
+// ===== TYPEWRITER =====
 const msgs = [
-    "Selamat ulang tahun, Agam! 🎉",
+    "Selamat ulang tahun, Adek! 🎉",
     "Semoga panjang umur & sehat selalu ✨",
     "Makin pinter, makin sholeh/sholehah 🙏",
     "Jadi kebanggaan keluarga! 🌟",
     "Mas/Mbak sayang banget sama kamu! ❤️"
 ];
 const typeArea = document.getElementById('typeArea');
-let mi = 0, ci = 0, del = false;
-
+let mi=0, ci=0, del=false;
 function type() {
-    const cur = msgs[mi], caret = '<span class="caret"></span>';
-    if (!del && ci <= cur.length) { typeArea.innerHTML = cur.substring(0,ci)+caret; ci++; setTimeout(type, 65); }
-    else if (!del) { del = true; setTimeout(type, 2200); }
-    else if (del && ci > 0) { typeArea.innerHTML = cur.substring(0,ci)+caret; ci--; setTimeout(type, 35); }
-    else { del = false; mi = (mi+1) % msgs.length; setTimeout(type, 400); }
+    const cur=msgs[mi], caret='<span class="caret"></span>';
+    if(!del&&ci<=cur.length){typeArea.innerHTML=cur.substring(0,ci)+caret;ci++;setTimeout(type,65);}
+    else if(!del){del=true;setTimeout(type,2200);}
+    else if(del&&ci>0){typeArea.innerHTML=cur.substring(0,ci)+caret;ci--;setTimeout(type,35);}
+    else{del=false;mi=(mi+1)%msgs.length;setTimeout(type,400);}
 }
-setTimeout(type, 1200);
+setTimeout(type,1200);
 
-// ====================================================
-// 5. TIMER
-// ====================================================
-function tick() {
-    const now = new Date(), s0 = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    const d = now - s0;
-    const h = Math.floor(d/36e5), m = Math.floor((d%36e5)/6e4), s = Math.floor((d%6e4)/1e3);
-    document.getElementById('timerVal').textContent = `${String(h).padStart(2,'0')} jam ${String(m).padStart(2,'0')} menit ${String(s).padStart(2,'0')} detik`;
-}
-tick(); setInterval(tick, 1000);
-
-// ====================================================
-// 6. CONFETTI
-// ====================================================
+// ===== CONFETTI TANPA HENTI =====
 const CC = ['#f59e0b','#ef4444','#06b6d4','#10b981','#8b5cf6','#f97316','#fff'];
 
-function boom() {
-    confetti({ particleCount: 130, spread: 100, origin: { y: 0.75 }, colors: CC, startVelocity: 55, ticks: 250 });
-    const end = Date.now() + 3500;
-    const iv = setInterval(() => {
-        if (Date.now() > end) return clearInterval(iv);
-        const t = (end - Date.now()) / 3500;
-        confetti({ particleCount: Math.floor(35*t), angle: 60, spread: 55, origin: { x: 0 }, colors: CC, startVelocity: 60 });
-        confetti({ particleCount: Math.floor(35*t), angle: 120, spread: 55, origin: { x: 1 }, colors: CC, startVelocity: 60 });
-    }, 280);
+// Ledakan besar dari bawah tengah
+function bigBurst() {
+    confetti({
+        particleCount: 100,
+        spread: 120,
+        startVelocity: 55,
+        origin: { x: 0.5, y: 0.9 },
+        colors: CC,
+        ticks: 200,
+        gravity: 0.8
+    });
 }
 
-document.getElementById('btnFire').addEventListener('click', function() {
-    boom();
-    this.textContent = '🎊 YAYYY!!!';
-    setTimeout(() => { this.textContent = '🎆 Konfeti Meriah!'; }, 3800);
-});
-document.getElementById('btnAgain').addEventListener('click', boom);
+// Ledakan dari kiri
+function leftBurst() {
+    confetti({
+        particleCount: 40,
+        angle: 60,
+        spread: 50,
+        startVelocity: 55,
+        origin: { x: 0, y: 0.7 },
+        colors: CC,
+        ticks: 180
+    });
+}
 
-// ====================================================
-// 7. MODAL
-// ====================================================
+// Ledakan dari kanan
+function rightBurst() {
+    confetti({
+        particleCount: 40,
+        angle: 120,
+        spread: 50,
+        startVelocity: 55,
+        origin: { x: 1, y: 0.7 },
+        colors: CC,
+        ticks: 180
+    });
+}
+
+// Hujan konfeti halus dari atas
+function softRain() {
+    confetti({
+        particleCount: 15,
+        spread: 180,
+        startVelocity: 10,
+        origin: { x: Math.random(), y: -0.1 },
+        colors: CC,
+        ticks: 300,
+        gravity: 0.4,
+        drift: (Math.random() - 0.5) * 2
+    });
+}
+
+// Ledakan spiral dari titik acak
+function randomPop() {
+    confetti({
+        particleCount: 50,
+        spread: 360,
+        startVelocity: 35,
+        origin: { x: 0.2 + Math.random()*0.6, y: 0.3 + Math.random()*0.4 },
+        colors: CC,
+        ticks: 150,
+        shapes: ['circle', 'square'],
+        scalar: 0.8 + Math.random()*0.5
+    });
+}
+
+// ===== LOOP KONFETI TERUS MENERUS =====
+// Ledakan besar setiap 3 detik silih berganti pola
+let burstIndex = 0;
+setInterval(() => {
+    const patterns = [
+        () => { bigBurst(); },
+        () => { leftBurst(); rightBurst(); },
+        () => { randomPop(); },
+        () => { leftBurst(); setTimeout(rightBurst, 300); setTimeout(bigBurst, 600); },
+        () => { randomPop(); setTimeout(randomPop, 400); }
+    ];
+    patterns[burstIndex % patterns.length]();
+    burstIndex++;
+}, 3000);
+
+// Hujan halus terus menerus setiap 500ms
+setInterval(softRain, 500);
+
+// Ledakan pembuka langsung saat halaman muncul
+setTimeout(() => {
+    bigBurst();
+    setTimeout(() => { leftBurst(); rightBurst(); }, 500);
+    setTimeout(randomPop, 1000);
+}, 600);
+
+// ===== MODAL =====
 const modalBg = document.getElementById('modalBg');
 document.getElementById('btnWish').addEventListener('click', () => {
     modalBg.classList.add('open');
-    confetti({ particleCount: 50, spread: 70, origin: { y: 0.45 }, colors: CC });
+    // Ledakan spesial saat modal dibuka
+    confetti({ particleCount: 80, spread: 90, origin: { y: 0.45 }, colors: CC, startVelocity: 40 });
 });
 document.getElementById('modalClose').addEventListener('click', () => modalBg.classList.remove('open'));
-modalBg.addEventListener('click', e => { if (e.target === modalBg) modalBg.classList.remove('open'); });
-
-// ====================================================
-// 8. MUSIK TOGGLE
-// ====================================================
-const audio = document.getElementById('bgMusic');
-const musicBtn = document.getElementById('musicBtn');
-let isPlaying = false;
-musicBtn.addEventListener('click', () => {
-    if (isPlaying) { audio.pause(); musicBtn.classList.remove('playing'); }
-    else { audio.play().catch(()=>{}); musicBtn.classList.add('playing'); }
-    isPlaying = !isPlaying;
-});
-
-// ====================================================
-// AUTO CONFETTI saat pertama buka
-// ====================================================
-setTimeout(boom, 800);
+modalBg.addEventListener('click', e => { if(e.target===modalBg) modalBg.classList.remove('open'); });
 </script>
 </body>
 </html>
